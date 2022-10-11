@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:latihan_bloc/bloc/counter.dart';
 
 import 'home.dart';
 
@@ -11,8 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: HomePage(),
+    return BlocProvider(
+      create: (context) => Counter(),
+      child: MaterialApp(
+        home: HomePage(),
+      ),
     );
   }
 }
