@@ -22,15 +22,44 @@ class HomePage extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocBuilder<Counter, int>(
-            bloc: myCounter,
-            builder: (context, state) {
-              return Text(
-                "$state",
-                style: TextStyle(fontSize: 50),
-              );
-            },
-          ),
+          MultiBlocListener(
+              listeners: [
+                BlocListener<Counter, int>(
+                  listener: (context, state) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text("> 10")));
+                  },
+                  listenWhen: (prev, curr) {
+                    if (curr > 10) {
+                      return true;
+                    } else {
+                      return false;
+                    }
+                  },
+                ),
+                BlocListener<ThemeBloc, bool>(
+                  listener: (context, state) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text("Gelap")));
+                  },
+                  listenWhen: (prev, curr) {
+                    if (curr == true) {
+                      return false;
+                    } else {
+                      return true;
+                    }
+                  },
+                ),
+              ],
+              child: BlocBuilder<Counter, int>(
+                bloc: myCounter,
+                builder: (context, state) {
+                  return Text(
+                    "$state",
+                    style: TextStyle(fontSize: 50),
+                  );
+                },
+              )),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
